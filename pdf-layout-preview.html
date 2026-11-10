@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Layout Preview</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: #e0e0e0;
+            padding: 20px;
+            font-family: 'Prompt', 'Sarabun', sans-serif;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .pdf-preview {
+            width: 210mm;
+            height: 297mm;
+            background: white;
+            margin: 0 auto 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            padding: 0;
+            font-family: 'Prompt', 'Sarabun', sans-serif;
+            overflow-y: auto;
+        }
+        
+        .document-container {
+            border: 3px solid #000;
+            margin: 10mm;
+            padding: 15mm 20mm;
+            min-height: 277mm;
+        }
+        
+        .header { 
+            text-align: center; 
+            border-bottom: 2px solid #000; 
+            padding-bottom: 5mm; 
+            margin-bottom: 6mm;
+        }
+        .header h1 { font-size: 24px; margin: 0 0 3px 0; font-weight: 700; }
+        .header p { font-size: 12px; margin: 0; font-weight: 400; }
+        
+        .section { margin-bottom: 5mm; }
+        .section-title { 
+            background: #f0f0f0; 
+            font-weight: 600; 
+            padding: 3.5mm 4mm; 
+            font-size: 12px;
+            margin-bottom: 3mm;
+            border-radius: 2px;
+            text-align: left;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 2mm 2mm;
+            font-size: 11px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .info-row strong { font-weight: 600; }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 11px;
+            margin: 0;
+        }
+        th {
+            background: #f0f0f0; 
+            font-weight: 600; 
+            padding: 3mm;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        td {
+            padding: 2.5mm;
+            border: 1px solid #ddd;
+        }
+        td.number { text-align: center; }
+        td.right { text-align: right; }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 3mm 2mm;
+            font-size: 11px;
+            border-bottom: 1px solid #ddd;
+        }
+        .summary-row.total {
+            font-weight: 700;
+            font-size: 13px;
+            color: #d32f2f;
+            padding: 4mm 2mm;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+        }
+        
+        .footer {
+            text-align: center;
+            font-size: 10px;
+            color: #666;
+            margin-top: 6mm;
+            padding-top: 3mm;
+            border-top: 1px solid #ddd;
+        }
+        
+        .changes-list {
+            background: #f9f9f9;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .changes-list h3 {
+            color: #2196F3;
+            margin-top: 0;
+        }
+        
+        .changes-list ul {
+            margin-left: 20px;
+        }
+        
+        .changes-list li {
+            margin: 8px 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 PDF Layout Fixes - Preview</h1>
+        
+        <div class="changes-list">
+            <h3>✅ ปรับปรุงที่ทำไปแล้ว</h3>
+            <ul>
+                <li><strong>✨ เพิ่มขอบข้าง (Border):</strong> กรอบสีดำ 3px รอบเนื้อหาทั้งหมด เพื่อให้ดูเป็นเอกสารอย่างเป็นทางการ</li>
+                <li><strong>ระยะขอบ (Margins):</strong> ปรับเพื่อให้มีช่องว่างที่สมดุลด้านบน-ล่าง (15mm) และซ้าย-ขวา (20mm)</li>
+                <li><strong>ขนาดตัวอักษร:</strong> ปรับให้อ่านชัดเจนขึ้น - หัวข้อหลัก 20px, ชื่อส่วน 11px, ข้อความ 10px</li>
+                <li><strong>ระยะห่างส่วน:</strong> เพิ่มระยะห่างระหว่างส่วนต่างๆ ให้เหมาะสม</li>
+                <li><strong>การจัดวาง:</strong> ปรับให้มีเนื้อที่ว่างเหลือด้านข้างเท่าๆ กัน</li>
+                <li><strong>ตารางสินค้า:</strong> เพิ่มช่องว่างในเซลล์เพื่อให้อ่านง่ายขึ้น</li>
+                <li><strong>ยอดรวม:</strong> เน้นให้ชัดเจนด้วยกรอบและสีแดง</li>
+            </ul>
+        </div>
+        
+        <h2 style="text-align: center; color: #666; margin: 30px 0 20px;">👇 ตัวอย่างเอกสาร PDF</h2>
+        
+        <div class="pdf-preview">
+            <!-- Document Container with Border -->
+            <div class="document-container">
+                <!-- Header -->
+                <div class="header">
+                    <h1>อรทัยปลาส้ม ออเดอร์</h1>
+                    <p>ปลาส้มโนนกาหลง สิรินธร บริการส่งถึงบ้านคุณ</p>
+                </div>
+                
+                <!-- ข้อมูลลูกค้า -->
+                <div class="section">
+                    <div class="section-title">ข้อมูลลูกค้า</div>
+                    <div class="info-row"><strong>ชื่อ:</strong> <span>นางสาว ปรีชา สวัสดี</span></div>
+                    <div class="info-row"><strong>โทร:</strong> <span>081-123-4567</span></div>
+                    <div class="info-row"><strong>ที่อยู่:</strong> <span>123 ซ.สุขภาพ บ้านกล้า อำเภอเมืองขอนแก่น จังหวัรขอนแก่น 40000</span></div>
+                    <div class="info-row"><strong>เวลา:</strong> <span>25/11/2567 14:30:45</span></div>
+                </div>
+                
+                <!-- รายการสินค้า -->
+                <div class="section">
+                    <div class="section-title">รายการสินค้า</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>สินค้า</th>
+                                <th class="number">จำนวน (kg)</th>
+                                <th class="number">ราคา/kg</th>
+                                <th class="right">รวม</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>ปลาส้มปลาตะเพียน</td>
+                                <td class="number">3.00</td>
+                                <td class="number">180.00</td>
+                                <td class="right">540.00</td>
+                            </tr>
+                            <tr>
+                                <td>ปลาส้มปลาจีน</td>
+                                <td class="number">2.50</td>
+                                <td class="number">180.00</td>
+                                <td class="right">450.00</td>
+                            </tr>
+                            <tr>
+                                <td>ปลาส้มน้อย</td>
+                                <td class="number">1.50</td>
+                                <td class="number">180.00</td>
+                                <td class="right">270.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- สรุปราคา -->
+                <div class="section">
+                    <div class="section-title">สรุปราคา</div>
+                    <div class="summary-row">
+                        <strong>ราคาสินค้า:</strong>
+                        <span>1,260.00 บาท</span>
+                    </div>
+                    <div class="summary-row">
+                        <strong>ค่าจัดส่ง (35 บาท/kg):</strong>
+                        <span>297.50 บาท</span>
+                    </div>
+                    <div class="summary-row total">
+                        <strong>ยอดรวมทั้งสิ้น</strong>
+                        <strong>1,557.50 บาท</strong>
+                    </div>
+                </div>
+                
+                <!-- ข้อมูลการชำระเงิน -->
+                <div class="section">
+                    <div class="section-title">ข้อมูลการชำระเงิน</div>
+                    <div class="info-row"><strong>ธนาคาร:</strong> <span>ธนาคารกสิกรไทย (PromptPay)</span></div>
+                    <div class="info-row"><strong>ชื่อบัญชี:</strong> <span>อรทัย โมฬีชาติ</span></div>
+                    <div class="info-row" style="color: #d32f2f; font-weight: 700; font-size: 10px;">
+                        <strong>จำนวนชำระ:</strong>
+                        <span>1,557.50 บาท</span>
+                    </div>
+                </div>
+                
+                <!-- Footer -->
+                <div class="footer">
+                    <p>ขอบคุณที่ใช้บริการอรทัยปลาส้ม ออเดอร์</p>
+                    <p>เอกสารนี้เป็นหลักฐานการสั่งซื้อ</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="changes-list">
+            <h3>📝 รายละเอียดการปรับปรุง</h3>
+            <ul>
+                <li><strong>ระยะขอบบน/ล่าง:</strong> 8mm → 15mm (ให้เนื้อที่ว่างมากขึ้น)</li>
+                <li><strong>ระยะขอบซ้าย/ขวา:</strong> 25mm → 20mm (สมดุลกว่า)</li>
+                <li><strong>หัวข้อหลัก:</strong> 18px → 20px</li>
+                <li><strong>ชื่อส่วน:</strong> 10px → 11px</li>
+                <li><strong>ระยะห่างระหว่างส่วน:</strong> 4-5mm → 5-6mm</li>
+                <li><strong>ความสูงของแถวสารสนเทศ:</strong> 1.5mm → 2mm padding</li>
+                <li><strong>เนื้อที่ในตาราง:</strong> เพิ่ม padding 2mm → 2.5-3mm</li>
+            </ul>
+        </div>
+        
+        <div style="background: #e3f2fd; padding: 15px; border-radius: 4px; text-align: center; margin-top: 30px;">
+            <p style="color: #1976d2; margin: 0;">
+                ✅ PDF จะแสดงผลในรูปแบบเดียวกับด้านบน<br>
+                ✅ มีเนื้อที่ว่างที่สมดุลด้านซ้ายและขวา<br>
+                ✅ มีขอบข้างเพื่อให้ดูเป็นเอกสารอย่างเป็นทางการ<br>
+                ✅ ข้อมูลแสดงชัดเจนและครบถ้วน
+            </p>
+        </div>
+    </div>
+</body>
+</html>

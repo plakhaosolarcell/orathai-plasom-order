@@ -1,0 +1,30 @@
+# Node modules
+node_modules/
+
+# Test files
+test.html
+test-pdf.html
+download-test.html
+fish_image.txt
+fish_js.txt
+
+# Documentation (optional - comment out if you want to include)
+BEFORE_AFTER_COMPARISON.md
+LAYOUT_FIXES.md
+PDF_BORDER_UPDATE.md
+PDF_FIXES_SUMMARY_TH.md
+PDF_LAYOUT_COMPLETE_SUMMARY.md
+
+# Server file (not needed for GitHub Pages)
+server.js
+
+# Local environment files
+.env
+.DS_Store
+*.log
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo

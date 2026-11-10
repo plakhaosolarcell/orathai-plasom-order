@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>อรทัยปลาส้ม ออเดอร์ - Premium Fermented Fish</title>
+    <link rel="stylesheet" href="style_premium.css">
+    <!-- Google Fonts - Thai Support -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600;700;800&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- html2canvas for rendering HTML to image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <!-- jsPDF for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <div class="header-content">
+            <div class="header-wrapper">
+                <div class="header-profile">
+                    <img src="images/orathai-profile.jpg" alt="อรทัย โมฬีชาติ" class="profile-image">
+                </div>
+                <div class="header-text">
+                    <h1 class="app-title">🐟 อรทัยปลาส้ม ออเดอร์</h1>
+                    <p class="app-subtitle">ปลาส้มโนนกาหลง สิรินธร บริการส่งถึงบ้านคุณ</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- หน้าแสดงเมนู -->
+        <div id="menuPage" class="page active">
+            <section class="menu-section">
+                <h2>📦 เมนูสินค้า</h2>
+                <div class="menu-grid" id="menuGrid">
+                    <!-- เมนูสินค้าจะถูกเพิ่มที่นี่ด้วย JavaScript -->
+                </div>
+            </section>
+
+            <section class="cart-section">
+                <h2>🛒 ตะกร้าสินค้า</h2>
+                <div class="cart-container">
+                    <div id="cartItems" class="cart-items">
+                        <p class="empty-cart">ตะกร้าว่างเปล่า</p>
+                    </div>
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <span>ราคาสินค้า:</span>
+                            <span id="subtotalPrice" class="total-price">0 บาท</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>ค่าจัดส่ง (35 บาท/kg):</span>
+                            <span id="shippingPrice" class="total-price">0 บาท</span>
+                        </div>
+                        <div class="summary-row" style="border-top: 2px solid #eee; padding-top: 10px;">
+                            <span>ยอดรวมทั้งสิ้น:</span>
+                            <span id="totalPrice" class="total-price" style="font-size: 1.5rem;">0 บาท</span>
+                        </div>
+                        <button class="btn-order" id="orderBtn">สั่งซื้อ</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- หน้า QR Code Payment -->
+        <div id="paymentPage" class="page">
+            <section class="payment-section">
+                <div class="payment-container">
+                    <div class="payment-header">
+                        <h2>💳 ชำระเงิน</h2>
+                        <button class="btn-back" onclick="backToMenu()">← ย้อนกลับ</button>
+                    </div>
+
+                    <div class="payment-content">
+                        <div class="order-summary-box">
+                            <h3>📋 รายละเอียดการสั่งซื้อ</h3>
+                            <div id="paymentOrderDetails" class="order-details">
+                                <!-- รายละเอียดคำสั่งจะแสดงที่นี่ -->
+                            </div>
+                        </div>
+
+                        <div class="qr-code-section">
+                            <h3>📱 สแกน QR Code เพื่อชำระเงิน</h3>
+                            <div class="qr-code-box">
+                                <img src="images/promptpay-qrcode.jpg" alt="PromptPay QR Code" class="qr-code-image">
+                                <p class="qr-text">ธนาคารเกษตรและสหกรณ์การเกษตร PromptPay</p>
+                            </div>
+
+                            <div class="account-info">
+                                <h4>👤 ชื่อบัญชี</h4>
+                                <p class="account-name">อรทัย โมฬีชาติ</p>
+                                <p class="account-note">กรุณาชำระเงินตามจำนวนด้านบนและระบุจำนวนสินค้าไว้ในหมายเหตุ</p>
+                            </div>
+
+                            <div class="payment-amount-box">
+                                <span>ยอดชำระ:</span>
+                                <span id="paymentAmount" class="payment-amount">0 บาท</span>
+                            </div>
+
+                            <button class="btn-payment-done" onclick="completePayment()">✅ ชำระเงินเสร็จสิ้น</button>
+                            <p class="payment-note">หลังจากชำระเงินกรุณากดปุ่มด้านบนเพื่อยืนยัน</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- หน้า Delivery Form -->
+        <div id="deliveryPage" class="page">
+            <section class="delivery-section">
+                <div class="delivery-container">
+                    <div class="delivery-header">
+                        <h2>📦 กรอกข้อมูลการส่งสินค้า</h2>
+                    </div>
+
+                    <div class="delivery-content">
+                        <form id="deliveryForm">
+                            <div class="form-group">
+                                <label for="customerName">👤 ชื่อลูกค้า *</label>
+                                <input type="text" id="customerName" name="customerName" placeholder="เช่น นายสมชาย">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customerPhone">📱 เบอร์โทรศัพท์ *</label>
+                                <input type="tel" id="customerPhone" name="customerPhone" placeholder="เช่น 081-234-5678">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customerAddress">📍 ที่อยู่ *</label>
+                                <textarea id="customerAddress" name="customerAddress" placeholder="กรุณาระบุที่อยู่ที่ต้องการให้ส่ง" rows="4"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="slipImage">🧾 อัพโหลดสลิปโอนจ่าย (ไม่บังคับ)</label>
+                                <div class="file-upload">
+                                    <input type="file" id="slipImage" name="slipImage" accept="image/*" onchange="handleSlipUpload(event)">
+                                    <label for="slipImage" class="file-upload-label">
+                                        <span id="fileLabel">📷 คลิกเพื่อเลือกรูปสลิป</span>
+                                    </label>
+                                    <div id="slipPreview" class="slip-preview"></div>
+                                </div>
+                            </div>
+
+                            <div class="order-summary-delivery">
+                                <h4>📋 สรุปการสั่งซื้อ</h4>
+                                <div id="deliverySummary"></div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn-back-delivery" onclick="backToPayment()">← ย้อนกลับ</button>
+                                <button type="submit" class="btn-submit-delivery">✅ ยืนยันการสั่งซื้อ</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- หน้า Success -->
+        <div id="successPage" class="page">
+            <section class="success-section">
+                <div class="success-container">
+                    <div class="success-icon">✅</div>
+                    <h2>สั่งซื้อสำเร็จ!</h2>
+                    <p>ขอบคุณที่สั่งซื้อปลาส้มกับอรทัยปลาส้ม ออเดอร์</p>
+                    
+                    <div class="success-details" id="successDetails">
+                        <div class="detail-row">
+                            <span class="label">ชื่อลูกค้า:</span>
+                            <span id="successName" class="value"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">เบอร์โทร:</span>
+                            <span id="successPhone" class="value"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">ที่อยู่:</span>
+                            <span id="successAddress" class="value"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">ยอดชำระ:</span>
+                            <span id="successAmount" class="value amount"></span>
+                        </div>
+                    </div>
+
+                    <p class="success-message">
+                        เราได้รับข้อมูลการสั่งซื้อของคุณแล้ว<br>
+                        ทีมงานของเราจะติดต่อคุณเร็ว ๆ นี้ เพื่อยืนยันการส่งสินค้า
+                    </p>
+
+                    <div class="success-actions">
+                        <button class="btn-download-pdf" onclick="downloadOrderPDF()">📥 ดาวน์โหลด PDF</button>
+                        <button class="btn-new-order" onclick="startNewOrder()">🛍️ สั่งซื้อเพิ่มเติม</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

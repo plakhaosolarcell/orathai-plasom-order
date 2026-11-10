@@ -1,0 +1,18 @@
+{
+  "name": "orathai-plasom-app",
+  "version": "1.0.0",
+  "description": "Orathai Plasom Order Application",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["order", "plasom", "delivery"],
+  "author": "Orathai",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pdfkit": "^0.13.0",
+    "cors": "^2.8.5"
+  }
+}
